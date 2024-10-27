@@ -1,26 +1,39 @@
 const express = require("express")
 const mongoose = require("mongoose")
 const app = express();
-
-
+const dotevn = require("dotenv").config()
+//adopting the http error inside our app
+const createError = require("http-errors")
 
 app.use(express.urlencoded({extended: true}))
-
 app.use(express.json())
 // mongodb+srv://Ayodele:Aderinwale12@cluster0.jxpibgm.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
 
-mongoose.connect("mongodb+srv://Ayodele:Aderinwale12@cluster0.jxpibgm.mongodb.net" , 
+mongoose.connect(process.env.URI , 
 	{
-		dbName: ""
+		dbName: process.env.database
 	}
 )
 .then(()=>{
 	console.log("Database connected Successfully")
 })
+.catch(err => console.log(err.message));
 
+mongoose.connection.on("connected", ()=>{
+	console.log("mongoose successfully connected")
+})
 
+// mongoose.connection.on("connected", () => {
+// 	console.log("Mongoose connected to database Successfully")
+// })
 
+// mongoose.connection.on("error", (err) => {
+// 	console.log(err.message)
+// })
 
+// mongoose.coneection.on("disconnected", () => {
+// 	console.log("mongoose disconnected from the database")
+// } )
 //passing params
 app.all("/test", (req, res) => {
 	// console.log(req.query)
@@ -36,11 +49,18 @@ app.all("/test", (req, res) => {
 const productRoutes = require("./Routes/products.route.js")
 app.use("/products", productRoutes)
 
-//getting a page that is not on my app
-app.use( (req, res, next)=> {
-	const err = new Error ("This page cannot be found")
-	err.status = 404
-	next(err)
+//getting a page that is not on my app 
+//handling built in error
+// app.use( (req, res, next)=> {
+// 	const err = new Error ("This page cannot be found")
+// 	err.status = 404
+// 	next(err)
+// })
+
+//Using Error from npm package
+app.use((req, res, next)=>{
+	n
+	next(createError(404, "Page Not Found, Try again later"))
 })
 
 //handling error in express
@@ -53,6 +73,9 @@ app.use ((err, req, res, next ) => {
 		}
 	})
 })
-app.listen(5000, () => {
-	console.log("Server is running on port 5000")
+
+ const port = process.env.PORT || 3000
+
+app.listen(port, () => {
+	console.log("Server is running on port " + port)
 })

@@ -9,7 +9,11 @@
   "author": "Delekzie",
   "license": "ISC",
   "dependencies": {
+    "dotenv": "^16.4.5",
+    "errors": "^0.3.0",
     "express": "^4.21.1",
+    "http": "^0.0.1-security",
+    "http-errors": "^2.0.0",
     "mongoose": "^8.7.2"
   }
 }

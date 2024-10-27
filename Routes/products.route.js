@@ -2,37 +2,18 @@ const express = require("express")
 const router = express.Router()
 
 const Product = require('../Model/products.model')
+const productController = require('../Controllers/products.controller')
 
-router.get("/", (req, res, next) => {
-	res.send("I'm getting a list of all products")
-})
-router.post ("/", (req, res, next) => {
-	console.log(req.body)
-	const product = new Product ({
-		name: req.body.name,
-		price: req.body.price
-	})
-	product.save()
-	.then( result => {
-		console.log(result)
-		res.send(result)
-	})
-	.catch(err => {
-		console.log(err.message)
-	})
-})
-
-// USING IDS
-router.get("/:id", (req, res, next) => {
-	// res.send("getting a single product")
-	next(new Error ("this page is fulty"))
-})
-router.patch("/:id", (req, res, next) => {
-	res.send("Updating a single product")
-})
-router.delete("/:id", (req, res, next) => {
-	res.send("deleting a single product")
-})
+//getting a list of all products from your database
+router.get("/", productController.getAllProducts)
+//creating a product in our database / add to database
+router.post ("/", productController.createNewProduct)
+// gettin a product by its ID
+router.get("/:id", productController.getById)
+//how to update a product using id
+router.patch("/:id", productController.updateProduct)
+//how to delete data from our database
+router.delete("/:id", productController.deleteProduct )
 
 
 module.exports = router

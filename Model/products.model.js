@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-
+//Creating a follow up guideline for a product or user
 const ProductSchema = new Schema ({
 	name: {
 		type: String,
